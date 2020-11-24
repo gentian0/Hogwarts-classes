@@ -1,6 +1,7 @@
-package app.page;
+package app.page.wework;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+
+import app.page.BasePage;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.pagefactory.AndroidFindBy;
@@ -15,12 +16,14 @@ import org.openqa.selenium.WebElement;
  * 成员删除
  */
 
-public class ContactPage extends BasePage{
+public class ContactPage extends BasePage {
     public ContactPage(AppiumDriver<MobileElement> driver){
         super(driver);
+
     }
 
 //----------------------------------添加成员----------------------------------
+
     @AndroidFindBy(xpath = "//*[text=\"添加成员\"]")
     private WebElement addMembersBtn;
 
@@ -52,7 +55,14 @@ public class ContactPage extends BasePage{
 
 
     public  ContactPage addMember(){
-
+        click(addMembersBtn);
+        click(manualAddBtn);
+        sendKey(memberName,"sString");
+        sendKey(phone,"18012635497");
+        click(setDepartBtn);
+        click(departGsi);
+        click(confirmBtn);
+        click(savaBtn);
         return this;
     }
 

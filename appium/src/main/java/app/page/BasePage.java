@@ -6,9 +6,9 @@ import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.MalformedURLException;
@@ -23,8 +23,8 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class BasePage {
-    AppiumDriver driver;
-    WebDriverWait wait;
+    public AppiumDriver driver;
+    public WebDriverWait wait;
     String appPackage;
     String appActivity;
 
@@ -36,7 +36,7 @@ public class BasePage {
     }
     public BasePage(AppiumDriver<MobileElement> driver){
         this.driver = driver;
-        wait = new WebDriverWait(this.driver, 30);
+        wait = new WebDriverWait(this.driver, 60);
     }
 
     public void startApp(String appPackage,String appActivity){
@@ -58,7 +58,7 @@ public class BasePage {
         }
 
         driver = new AndroidDriver(url, caps);
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        implicitlyWait(60);
     }
 
     public void implicitlyWait(int time) {
@@ -90,8 +90,31 @@ public class BasePage {
         return new TouchAction(driver);
     }
 
-    void click(){
-        
+
+    void click(WebElement element, boolean scroll){
+        if (scroll){
+            scroll(element);
+        }
+        try {
+            element.click();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+    public void click(WebElement element){
+        click(element,false);
+    }
+
+    public void sendKey(WebElement element, String keywords){
+        if (element.isDisplayed()){
+            element.clear();
+            element.sendKeys(keywords);
+        }else {
+            wait.until(ExpectedConditions.visibilityOf(element)).sendKeys(keywords);
+        }
+
+    }
+
+
 
 }
